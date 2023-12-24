@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  # Node.js application
+  app:
+    build: .
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+    environment:
+      - PGHOST=db
+      - PGUSER=postgres
+      - PGDATABASE=database_name
+      - PGPASSWORD=password
+
+  # PostgreSQL database
+  db:
+    image: postgres:latest
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=password
+
+  # pgAdmin 4 web interface for PostgreSQL
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "8080:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+
+volumes:
+  pgdata:
